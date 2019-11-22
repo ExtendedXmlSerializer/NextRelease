@@ -42,6 +42,8 @@ install:
         git submodule update --init
         git submodule update --rebase --remote
         
+        dir documentation/conceptual/documents
+        
         if ($release)
         {
             Install-Module -Name PowerShellForGitHub
