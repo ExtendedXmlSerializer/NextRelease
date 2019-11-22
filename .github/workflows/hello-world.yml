@@ -1,9 +1,9 @@
 name: CI
 
-# on: [push]
-on:
-  release:
-    types: [published, unpublished, edited]
+on: [push]
+# on:
+#  release:
+#    types: [published, unpublished, edited]
 
 jobs:
   build:
@@ -11,8 +11,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Hello World!
-      run: |
-           Write-Host "Hello World Are you There?!"
-      shell: pwsh
+    # - uses: actions/checkout@v1
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Reset Build Number
+        run: |
+             <#
+             $headers = @{
+               "Authorization" = "Bearer ${{ secrets.API_APPVEYOR_TOKEN }}
+               "Content-type" = "application/json"
+               "Accept" = "application/json"
+             }
+             $build = @{ nextBuildNumber = 1 }
+             $json = $build | ConvertTo-Json
+             Invoke-RestMethod -Method Put "https://ci.appveyor.com/api/projects/ExtendedXmlSerializer/$env:APPVEYOR_PROJECT_SLUG/settings/build-number" -Body $json -Headers $headers
+             #>
+        shell: pwsh
