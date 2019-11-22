@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;net462</TargetFrameworks>
+    <AssemblyName>ExtendedXmlSerializer.Samples</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>ExtendedXmlSerializer.Samples</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExtendedXmlSerializer.Legacy" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ExtendedXmlSerializer\ExtendedXmlSerializer.csproj" />
+  </ItemGroup>
+
+</Project>
