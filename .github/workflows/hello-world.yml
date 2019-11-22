@@ -1,6 +1,9 @@
 name: CI
 
-on: [push]
+# on: [push]
+on:
+  release:
+    types: [published, unpublished, edited]
 
 jobs:
   build:
