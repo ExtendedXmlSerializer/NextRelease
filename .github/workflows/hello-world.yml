@@ -10,13 +10,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      Hello: ${{ github.repository.owner.name }}
     steps:
     # - uses: actions/checkout@v1
       - name: Reset Build Number
         run: |
+             $env:Hello
              <#
              $headers = @{
-               "Authorization" = "Bearer ${{ secrets.API_APPVEYOR_TOKEN }}
+               "Authorization" = "Bearer ${{ secrets.API_APPVEYOR_TOKEN }}"
                "Content-type" = "application/json"
                "Accept" = "application/json"
              }
