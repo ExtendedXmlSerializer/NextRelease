@@ -1,0 +1,17 @@
+on:
+  release:
+    types: [edited]
+
+name: Hide Release
+
+jobs:
+  build:
+    name: Hide Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello World!
+        env:
+          Hello: "Yo World Whattap!"        
+        run: |
+           Write-Host "Hello World Are you There?! $env:Hello"
+        shell: pwsh
