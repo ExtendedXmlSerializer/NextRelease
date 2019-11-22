@@ -34,8 +34,7 @@ pull_requests:
   do_not_increment_build_number: true
 
 install:
-  - ps: . .\.build\Common.ps1
-  - ps: .\.build\Install.ps1
+  - ps: . .\.build\Install.ps1
 
 dotnet_csproj:
   patch: true
@@ -86,13 +85,6 @@ before_deploy:
             Set-AppveyorBuildVariable "DEPLOY_RELEASE_ENABLED" true
         }
 deploy:
-- provider: NuGet
-  name: production
-  api_key:
-    secure: kExW39+W8VRwk3UMReJiT7h2ySKqC9ZpbSPJ87zFNn8uTSLMsZNMCVn/VMrY+7Q7
-  on:
-    branch: master
-    appveyor_repo_tag: true
 - provider: GitHub
   tag: $(APPVEYOR_REPO_TAG_NAME)
   release: $(DEPLOY_RELEASE_NAME)
