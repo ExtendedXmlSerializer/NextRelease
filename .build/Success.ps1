@@ -28,9 +28,3 @@ if($documentation)
     git commit -m "AppVeyor Continuous Deployment Documentation Update v$($env:APPVEYOR_BUILD_VERSION)" -q
     git push origin gh-pages -q
 }
-
-if ($env:DEPLOY_RELEASE_URL)
-{
-	Write-Host "Deleting previous draft release: $env:DEPLOY_RELEASE_URL"
-	Invoke-RestMethod -Method DELETE -Headers @{ 'Authorization'="token $env:API_GITHUB_TOKEN" } -Uri $env:DEPLOY_RELEASE_URL
-}
