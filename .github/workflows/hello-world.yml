@@ -14,7 +14,6 @@ jobs:
     # - uses: actions/checkout@v1
       - name: Reset Build Number
         run: |
-             <#
              $headers = @{
                "Authorization" = "Bearer ${{ secrets.API_APPVEYOR_TOKEN }}"
                "Content-type" = "application/json"
@@ -22,6 +21,5 @@ jobs:
              }
              $build = @{ nextBuildNumber = 1 }
              $json = $build | ConvertTo-Json
-             Invoke-RestMethod -Method Put "https://ci.appveyor.com/api/projects/${{ github.event.repository.owner.name }}/${{ github.event.repository.name }}/settings/build-number" -Body $json -Headers $headers
-             #>
+             Invoke-RestMethod -Method Put "https://ci.appveyor.com/api/projects/${{ github.event.repository.owner.name }}/${{ github.event.repository.name }}/settings/build-number" -Body $json -Headers $headers             
         shell: pwsh
