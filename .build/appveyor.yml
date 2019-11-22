@@ -36,9 +36,12 @@ pull_requests:
 install:
   - ps: . .\.build\Install.ps1
   - ps: |
-        Write-Host "Checking assigned: $release - $env:DEPLOY_RELEASE_ENABLED"
+        if($documentation)
+        {            
+            git checkout $env:APPVEYOR_REPO_BRANCH -q
+            choco install docfx -y
+        }
         
-        git checkout $env:APPVEYOR_REPO_BRANCH -q
         git submodule update --init -q
         git submodule update --rebase --remote
         
@@ -46,11 +49,6 @@ install:
         {
             Install-Module -Name PowerShellForGitHub
         }
-        
-        if($documentation)
-        {            
-            choco install docfx -y
-        }        
 
 dotnet_csproj:
   patch: true
@@ -95,10 +93,6 @@ before_deploy:
                 Set-AppveyorBuildVariable "DEPLOY_RELEASE_IS_PRERELEASE" $view.prerelease
                 Set-AppveyorBuildVariable "DEPLOY_RELEASE_DESCRIPTION" $view.body                
             }
-        }
-        else
-        {
-            Set-AppveyorBuildVariable "DEPLOY_RELEASE_ENABLED" true
         }
 deploy:
 - provider: GitHub
