@@ -24,17 +24,3 @@ function Exec
 $release       = $env:APPVEYOR_REPO_TAG -eq "true" -and $env:APPVEYOR_REPO_TAG_NAME
 $documentation = $false; # $release -or $env:APPVEYOR_REPO_BRANCH  -eq "documentation-debug"
 Set-AppveyorBuildVariable "DEPLOY_RELEASE_ENABLED" $env:APPVEYOR_REPO_TAG
-
-if ($release)
-{
-	Install-Module -Name PowerShellForGitHub
-}
-
-if($documentation)
-{
-    git checkout $env:APPVEYOR_REPO_BRANCH -q
-    choco install docfx -y
-}
-
-git submodule -q update --init
-git submodule update --rebase --remote
