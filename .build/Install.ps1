@@ -23,4 +23,4 @@ function Exec
 
 $release       = $env:APPVEYOR_REPO_TAG -eq "true" -and $env:APPVEYOR_REPO_TAG_NAME
 $documentation = $false; # $release -or $env:APPVEYOR_REPO_BRANCH  -eq "documentation-debug"
-Set-AppveyorBuildVariable "DEPLOY_RELEASE_ENABLED" $env:APPVEYOR_REPO_TAG
+Set-AppveyorBuildVariable "DEPLOY_RELEASE_ENABLED" $true
