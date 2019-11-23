@@ -34,11 +34,13 @@ jobs:
                 git commit -m "Updating CHANGELOG"
                 # git push origin HEAD:master
                 # "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$INPUT_REPO.git"
-                git config submodule.moduleName.url git@github.com/${{ github.repository }}.wiki.git
+                # git config submodule.moduleName.url git@github.com/${{ github.repository }}.wiki.git
                 # cd ..\..\..
                 # git push origin HEAD:master --recurse-submodules=on-demand
-                git remote set-url origin git@github.com/${{ github.repository }}.wiki.git
-                git push origin HEAD:master
+                # git remote set-url origin git@github.com/${{ github.repository }}.wiki.git
+                # git push origin HEAD:master
+                
+                git push "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git"
              }             
         shell: pwsh
 #      - name: Commit files
