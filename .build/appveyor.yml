@@ -18,7 +18,7 @@ branches:
   - debug/deployment
 
 skip_commits:
-  author: $(DEPLOY_EMAIL)
+  author: ExtendedXmlSerializer Automation
   # files:
   #  - '.github\**\*.*'
 
