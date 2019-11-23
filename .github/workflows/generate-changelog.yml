@@ -30,21 +30,22 @@ jobs:
              if(!$?)
              {
                 git commit -m "Updating CHANGELOG"
-                git push
+                # git push
+                
              }             
         shell: pwsh
-      - name: Commit files
-        run: |
-             git config user.email $env:DEPLOY_EMAIL
-             git config user.name $env:DEPLOY_USER
-             git add -A
-             git diff-index --quiet HEAD | Out-Null
-             if(!$?)
-             {
-                git commit -m "Updating CHANGELOG"
-             }
-        shell: pwsh
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Commit files
+#        run: |
+#             git config user.email $env:DEPLOY_EMAIL
+#             git config user.name $env:DEPLOY_USER
+#             git add -A
+#             git diff-index --quiet HEAD | Out-Null
+#             if(!$?)
+#             {
+#                git commit -m "Updating CHANGELOG"
+#             }
+#        shell: pwsh
+#      - name: Push changes
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
