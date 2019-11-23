@@ -20,7 +20,7 @@ jobs:
              git config --local user.email $env:DEPLOY_EMAIL
              git config --local user.name $env:DEPLOY_USER
              git add -A
-             git commit -m "Updating CHANGELOG" -a
+             git commit -m "Updating CHANGELOG" --allow-empty
         shell: pwsh
       - name: Push changes
         uses: ad-m/github-push-action@master
