@@ -11,13 +11,15 @@ jobs:
       DEPLOY_EMAIL: ExtendedXmlSerializer@users.noreply.github.com
     steps:
       - uses: actions/checkout@master
-      - name: Create local changes
+      - name: Switch
+        run: git switch -c master
+      - name: Create CHANGELOG.md
         run: |
-             dir
-             . .\.github\workflows\Generate-Changelog.ps1
-             if (Get-Command 'Generate-Changelog' -errorAction SilentlyContinue) {
-                "Generate-Changelog exists"
-             }
+             dir /ah
+             # . .\.github\workflows\Generate-Changelog.ps1
+             # if (Get-Command 'Generate-Changelog' -errorAction SilentlyContinue) {
+             #   "Generate-Changelog exists"
+             # }
              # Generate-Changelog ${{ github.event.repository.owner.name }} ${{ github.event.repository.name }} | Out-File "CHANGELOG.md"
         shell: pwsh
 #      - name: Commit files
