@@ -11,8 +11,8 @@ jobs:
       DEPLOY_EMAIL: ExtendedXmlSerializer@users.noreply.github.com
     steps:
       - uses: actions/checkout@master
-      - name: Switch
-        run: git switch -c master
+      # - name: Switch
+      #  run: git switch -c master
       - name: Create CHANGELOG.md
         run: |
              dir -Force
