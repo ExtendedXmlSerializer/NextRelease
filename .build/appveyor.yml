@@ -71,8 +71,6 @@ install:
         }
         
         git submodule update --init -q
-        git submodule update --rebase --remote
-        
 
 dotnet_csproj:
   patch: true
@@ -82,12 +80,7 @@ dotnet_csproj:
 build_script:
   - ps: |
         Exec { & dotnet build $env:BUILD_SOLUTION_PATH -c Release }
-        Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
-
-        if ($documentation)
-        {
-            Exec { & docfx $env:BUILD_DOCUMENTATION_PATH }
-        }
+        Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }        
 
 after_test:
   - ps: Exec { & dotnet test $env:BUILD_SOLUTION_PATH -c Release -f netcoreapp2.1 }

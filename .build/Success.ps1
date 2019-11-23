@@ -1,5 +1,8 @@
 if($documentation)
 {
+	git submodule update --rebase --remote
+	Exec { & docfx $env:BUILD_DOCUMENTATION_PATH }
+	
     $key = ("-----BEGIN RSA PRIVATE KEY-----`n" +
             $env:DEPLOY_KEY.Replace(' ', "`n") +
             "`n-----END RSA PRIVATE KEY-----`n")
