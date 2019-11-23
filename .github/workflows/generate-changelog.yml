@@ -14,15 +14,18 @@ jobs:
       - name: Create CHANGELOG.md
         run: |
              $env:DEPLOY_EMAIL
-             # .\.build\Generate-Changelog.ps1 ${{ github.event.repository.owner.name }} ${{ github.event.repository.name }} | Out-File "CHANGELOG.md"
+             .\.build\Generate-Changelog.ps1 ${{ github.event.repository.owner.name }} ${{ github.event.repository.name }} | Out-File "CHANGELOG.md"
         shell: pwsh
-#      - name: Commit files
-#        run: |
-#             git config --local user.email $env:DEPLOY_EMAIL
-#             git config --local user.name $env:DEPLOY_USER
-#             git add -A
-#             git commit -m "Updating CHANGELOG" -a
-#      - name: Push changes
-#        uses: ad-m/github-push-action@master
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit files
+        run: |
+             $env:DEPLOY_EMAIL
+             $env:DEPLOY_USER
+             git config --local user.email $env:DEPLOY_EMAIL
+             git config --local user.name $env:DEPLOY_USER
+             git add -A
+             git commit -m "Updating CHANGELOG" -a
+        shell: pwsh
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
