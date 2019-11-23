@@ -19,8 +19,8 @@ branches:
 
 skip_commits:
   author: $(DEPLOY_EMAIL)
-  files:
-    - '.github\**\*.*'
+  # files:
+  #  - '.github\**\*.*'
 
 notifications:
   - provider: GitHubPullRequest
