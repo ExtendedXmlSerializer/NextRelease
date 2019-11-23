@@ -23,7 +23,7 @@ jobs:
              git diff-index --quiet HEAD git | Out-Null;
              if(!$?)
              {
-                commit -m "Updating CHANGELOG"
+                git commit -m "Updating CHANGELOG"
              }
         shell: pwsh
       - name: Push changes
