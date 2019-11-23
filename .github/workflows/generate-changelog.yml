@@ -30,7 +30,8 @@ jobs:
              if(!$?)
              {
                 git commit -m "Updating CHANGELOG"
-             }
+                git push
+             }             
         shell: pwsh
       - name: Commit files
         run: |
