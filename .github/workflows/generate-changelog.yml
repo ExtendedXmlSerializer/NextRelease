@@ -37,6 +37,7 @@ jobs:
                 git config submodule.moduleName.url git@github.com/${{ github.repository }}.wiki.git
                 # cd ..\..\..
                 # git push origin HEAD:master --recurse-submodules=on-demand
+                git remote set-url origin git@github.com/${{ github.repository }}.wiki.git
                 git push origin HEAD:master
              }             
         shell: pwsh
