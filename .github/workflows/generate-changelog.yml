@@ -19,7 +19,8 @@ jobs:
         run: |
              git config --local user.email $env:DEPLOY_EMAIL
              git config --local user.name $env:DEPLOY_USER
-             git commit -m "Add changes" -a
+             git add -A
+             git commit -m "Updating CHANGELOG" -a
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
