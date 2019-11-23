@@ -40,7 +40,7 @@ jobs:
                 # git remote set-url origin git@github.com/${{ github.repository }}.wiki.git
                 # git push origin HEAD:master
                 
-                git push "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git"
+                git push "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git" HEAD:master
              }             
         shell: pwsh
 #      - name: Commit files
