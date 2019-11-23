@@ -1,17 +1,3 @@
-if($release)
-{
-    $headers = @{
-        "Authorization" = "Bearer $env:API_APPVEYOR_TOKEN"
-        "Content-type" = "application/json"
-        "Accept" = "application/json"
-    }
-    $build = @{
-        nextBuildNumber = 1
-    }
-    $json = $build | ConvertTo-Json
-    Invoke-RestMethod -Method Put "https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/settings/build-number" -Body $json -Headers $headers
-}
-
 if($documentation)
 {
     $key = ("-----BEGIN RSA PRIVATE KEY-----`n" +
