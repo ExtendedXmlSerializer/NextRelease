@@ -10,18 +10,17 @@ jobs:
       DEPLOY_USER: "ExtendedXmlSerializer Automation via GitHub Action"
       DEPLOY_EMAIL: "ExtendedXmlSerializer@users.noreply.github.com"
     steps:
-      - uses: actions/checkout@master
+      # - uses: actions/checkout@master
       - name: Create CHANGELOG.md
         run: |
              .\.build\Generate-Changelog.ps1 ${{ github.event.repository.owner.name }} ${{ github.event.repository.name }} | Out-File "CHANGELOG.md"
         shell: pwsh
       - name: Commit files
         run: |
-             git config --local user.email $env:DEPLOY_EMAIL
-             git config --local user.name $env:DEPLOY_USER
+             git config --local user.email $DEPLOY_EMAIL
+             git config --local user.name $DEPLOY_USER
              git add -A
-             git commit -m "Updating CHANGELOG" --allow-empty
-        shell: pwsh
+             git diff-index --quiet HEAD git commit -m "Updating CHANGELOG"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
