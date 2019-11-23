@@ -20,7 +20,7 @@ jobs:
              git config user.email $env:DEPLOY_EMAIL
              git config user.name $env:DEPLOY_USER
              git add -A
-             git diff-index --quiet HEAD git | Out-Null;
+             git diff-index --quiet HEAD | Out-Null;
              if(!$?)
              {
                 git commit -m "Updating CHANGELOG"
