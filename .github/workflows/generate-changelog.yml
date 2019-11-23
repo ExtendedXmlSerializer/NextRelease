@@ -32,7 +32,9 @@ jobs:
              if(!$?)
              {
                 git commit -m "Updating CHANGELOG"
-                 git push origin HEAD:master
+                # git push origin HEAD:master
+                cd ..\..\..
+                git push --recurse-submodules
              }             
         shell: pwsh
 #      - name: Commit files
