@@ -15,7 +15,7 @@ jobs:
         run: git switch -c master
       - name: Create CHANGELOG.md
         run: |
-             dir /ah
+             dir -Force
              # . .\.github\workflows\Generate-Changelog.ps1
              # if (Get-Command 'Generate-Changelog' -errorAction SilentlyContinue) {
              #   "Generate-Changelog exists"
