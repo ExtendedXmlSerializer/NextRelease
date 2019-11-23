@@ -27,11 +27,11 @@ jobs:
              git config user.name $env:DEPLOY_USER
              git add -A
              git diff-index --quiet HEAD | Out-Null
+             git status
              if(!$?)
              {
                 git commit -m "Updating CHANGELOG"
-                # git push
-                
+                # git push                
              }             
         shell: pwsh
 #      - name: Commit files
