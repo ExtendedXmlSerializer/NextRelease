@@ -14,5 +14,5 @@ Param([Parameter(Mandatory=$true)]
 Install-Module Poshstache -Force
 Install-Module -Name PowerShellForGitHub -Force
 
-$releases = @{ releases = Get-GitHubRelease -OwnerName $Owner -RepositoryName $Repository -NoStatus | Sort-Object published_at -Descending } | ConvertTo-Json
+$releases = @{ releases = Get-GitHubRelease -DisableTelemetry -OwnerName $Owner -RepositoryName $Repository -NoStatus | Sort-Object published_at -Descending } | ConvertTo-Json
 ConvertTo-PoshstacheTemplate -InputString $Template -ParametersObject $releases
