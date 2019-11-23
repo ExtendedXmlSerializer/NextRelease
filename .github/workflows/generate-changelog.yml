@@ -10,7 +10,7 @@ jobs:
       DEPLOY_USER: "ExtendedXmlSerializer Automation via GitHub Action"
       DEPLOY_EMAIL: "ExtendedXmlSerializer@users.noreply.github.com"
     steps:
-      - uses: actions/checkout@master # to access .\.build\
+      - uses: actions/checkout@master
       - name: Create CHANGELOG.md
         run: |
              .\.build\Generate-Changelog.ps1 ${{ github.event.repository.owner.name }} ${{ github.event.repository.name }} | Out-File "CHANGELOG.md"
