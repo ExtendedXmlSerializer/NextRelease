@@ -34,7 +34,7 @@ jobs:
                 git commit -m "Updating CHANGELOG"
                 # git push origin HEAD:master
                 cd ..\..\..
-                git push --recurse-submodules
+                git push --recurse-submodules=on-demand
              }             
         shell: pwsh
 #      - name: Commit files
