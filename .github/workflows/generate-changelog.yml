@@ -32,7 +32,7 @@ jobs:
              if(!$?)
              {
                 git commit -m "Updating CHANGELOG"
-                git push
+                 git push origin HEAD:master
              }             
         shell: pwsh
 #      - name: Commit files
