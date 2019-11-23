@@ -1,0 +1,31 @@
+on: push 
+    
+name: Generate Changelog
+
+jobs:
+  build:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_USER: ExtendedXmlSerializer Automation via GitHub Action
+      DEPLOY_EMAIL: ExtendedXmlSerializer@users.noreply.github.com
+    steps:
+      - uses: actions/checkout@master
+      - name: Create local changes
+        run: |
+             dir
+             . .\.github\workflows\Generate-Changelog.ps1
+             if (Get-Command 'Generate-Changelog' -errorAction SilentlyContinue) {
+                "Generate-Changelog exists"
+             }
+             # Generate-Changelog ${{ github.event.repository.owner.name }} ${{ github.event.repository.name }} | Out-File "CHANGELOG.md"
+        shell: pwsh
+#      - name: Commit files
+#        run: |
+#             git config --local user.email $env:DEPLOY_EMAIL
+#             git config --local user.name $env:DEPLOY_USER
+#             git commit -m "Add changes" -a
+#      - name: Push changes
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
