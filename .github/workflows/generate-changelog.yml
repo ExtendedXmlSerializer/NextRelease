@@ -7,21 +7,22 @@ jobs:
     name: Generate Changelog
     runs-on: ubuntu-latest
     env:
-      DEPLOY_USER: ExtendedXmlSerializer Automation via GitHub Action
-      DEPLOY_EMAIL: ExtendedXmlSerializer@users.noreply.github.com
+      DEPLOY_USER: "ExtendedXmlSerializer Automation via GitHub Action"
+      DEPLOY_EMAIL: "ExtendedXmlSerializer@users.noreply.github.com"
     steps:
       - uses: actions/checkout@master
       - name: Create CHANGELOG.md
         run: |
-             .\.build\Generate-Changelog.ps1 ${{ github.event.repository.owner.name }} ${{ github.event.repository.name }} | Out-File "CHANGELOG.md"
+             $env:DEPLOY_EMAIL
+             # .\.build\Generate-Changelog.ps1 ${{ github.event.repository.owner.name }} ${{ github.event.repository.name }} | Out-File "CHANGELOG.md"
         shell: pwsh
-      - name: Commit files
-        run: |
-             git config --local user.email $env:DEPLOY_EMAIL
-             git config --local user.name $env:DEPLOY_USER
-             git add -A
-             git commit -m "Updating CHANGELOG" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Commit files
+#        run: |
+#             git config --local user.email $env:DEPLOY_EMAIL
+#             git config --local user.name $env:DEPLOY_USER
+#             git add -A
+#             git commit -m "Updating CHANGELOG" -a
+#      - name: Push changes
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
