@@ -12,7 +12,7 @@
 - Adjusted build scripts to be more generalized [#1](https://github.com/ExtendedXmlSerializer/NextRelease/pull/1) ( [Mike-EEE](https://github.com/Mike-EEE) )
 
 
-# [NEXTRELEASE of AWESOME v1.0.02](https://github.com/ExtendedXmlSerializer/NextRelease/releases/tag/1.0.2)
+# [NEXTRELEASE of AWESOME v1.0.2](https://github.com/ExtendedXmlSerializer/NextRelease/releases/tag/1.0.2)
 > 11/22/19 3:46:52 PM UTC
 ##### `1.0.2`
 
