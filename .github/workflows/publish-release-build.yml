@@ -109,6 +109,8 @@ jobs:
              environmentVariables = @{
                APPVEYOR_REPO_COMMIT_AUTHOR = $env:DEPLOY_USER
                APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL = $env:DEPLOY_EMAIL
+               APPVEYOR_REPO_TAG = $true
+               APPVEYOR_REPO_TAG_NAME = "${{ github.event.release.tag_name }}"
              }
            } | ConvertTo-Json
            
