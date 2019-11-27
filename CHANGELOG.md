@@ -1,6 +1,6 @@
-# [NEXTRELEASE of AWESOME v1.0.3](https://github.com/ExtendedXmlSerializer/NextRelease/releases/tag/9.0.10)
-> 11/27/2019 13:13:47 UTC
-##### ``9.0.10``
+# [NEXTRELEASE of AWESOME v1.0.3](https://github.com/ExtendedXmlSerializer/NextRelease/releases/tag/9.0.11)
+> 11/27/2019 13:19:25 UTC
+##### ``9.0.11``
 #### &#128027; Bug Fixes 
 - Fixed some ginomously painful bug yo. [#16](https://github.com/ExtendedXmlSerializer/NextRelease/pull/16) ( [Mike-EEE](https://github.com/Mike-EEE) )
 
