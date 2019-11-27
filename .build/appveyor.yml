@@ -15,7 +15,7 @@ image: Visual Studio 2019
 skip_tags: true
 skip_non_tags: false
 skip_commits:
-  author: /ExtendedXmlSerializer Automation*/
+  author: /Automation Agent/
 
 configuration: Debug
 
@@ -81,21 +81,7 @@ for:
   build_script:
   - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
   
-  test: off
+  # test: off
 
-  before_deploy:
-  - ps: .\.build\Store-CurrentRelease.ps1
-
-  deploy:
-  - provider: GitHub
-    tag: $(APPVEYOR_REPO_TAG_NAME)
-    release: $(DEPLOY_RELEASE_NAME)
-    description: $(DEPLOY_RELEASE_DESCRIPTION)
-    artifact: /.*\.nupkg/
-    draft: false
-    prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
-    auth_token: $(API_GITHUB_TOKEN)
-    force_update: true
-    on:
-      branch: master
-      appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)        
+  # on_success:
+  # - ps: .\.build\Deploy-Documentation.ps1
