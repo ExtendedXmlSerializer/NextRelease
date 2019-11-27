@@ -78,8 +78,8 @@ for:
   - ps: . .\.build\Initialize.ps1
   - ps: .\.build\Install.ps1
   
-  build_script:
-  - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+  # build_script:
+  # - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
   
   # test: off
 
