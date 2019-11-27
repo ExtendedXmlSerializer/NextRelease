@@ -12,6 +12,9 @@ environment:
 
 image: Visual Studio 2019
 
+cache:
+  - '%USERPROFILE%\.ssh\known_hosts'
+
 skip_tags: true
 skip_non_tags: false
 skip_commits:
@@ -20,7 +23,7 @@ skip_commits:
 configuration: Debug
 
 install:
-- ps: . .\.build\Initialize.ps1
+  - ps: . .\.build\Initialize.ps1
 
 dotnet_csproj:
   patch: true
@@ -43,81 +46,81 @@ for:
 - # Development
   branches:
     only:
-    - master
+      - master
   
   notifications:
-  - provider: GitHubPullRequest
-    template: |
-      {{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})
-
-      {{#passed}}
-      Install it by running the following command in [Package Manager Console](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell):
-
-      ```
-      Install-Package ExtendedXmlSerializer -Version {{buildVersion}} -Source https://ci.appveyor.com/nuget/extendedxmlserializer-preview
-      ```
-      {{/passed}}
-    on_build_success: true
+    - provider: GitHubPullRequest
+      template: |
+        {{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})
+    
+        {{#passed}}
+        Install it by running the following command in [Package Manager Console](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell):
+    
+        ```
+        Install-Package ExtendedXmlSerializer -Version {{buildVersion}} -Source https://ci.appveyor.com/nuget/extendedxmlserializer-preview
+        ```
+        {{/passed}}
+      on_build_success: true
 
   after_test:
-  - ps: Exec { & dotnet test $env:BUILD_SOLUTION_PATH -c Release -f netcoreapp2.1 }
+    - ps: Exec { & dotnet test $env:BUILD_SOLUTION_PATH -c Release -f netcoreapp2.1 }
 
   nuget:
     project_feed: true
     disable_publish_on_pr: false
   artifacts:
-  - path: src\**\*.nupkg
-    name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
+    - path: src\**\*.nupkg
+      name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
  
 - # Debug
   branches:
     only:
-    - /debug\/\w*/
+      - /debug\/\w*/
   
   install:
-  - ps: . .\.build\Initialize.ps1
-  - ps: .\.build\Install.ps1
+    - ps: . .\.build\Initialize.ps1
+    - ps: .\.build\Install.ps1
   
   build_script:
-  - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+    - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
   
   test: off
 
   on_success:
-  - ps: .\.build\Deploy-Documentation.ps1
+    - ps: .\.build\Deploy-Documentation.ps1
 - # Deploy
   branches:
     only:
-    - /\d*\.\d*\.\d*/
+      - /\d*\.\d*\.\d*/
   
   skip_tags: false
   skip_non_tags: true
   
   install:
-  - ps: . .\.build\Initialize.ps1
-  - ps: .\.build\Install.ps1
+    - ps: . .\.build\Initialize.ps1
+    - ps: .\.build\Install.ps1
   
   build_script:
-  - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
-  - ps: Exec { & docfx $env:BUILD_DOCUMENTATION_PATH }
+    - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+    - ps: Exec { & docfx $env:BUILD_DOCUMENTATION_PATH }
   
   test: off
 
   before_deploy:
-  - ps: .\.build\Store-CurrentRelease.ps1
+    - ps: .\.build\Store-CurrentRelease.ps1
 
   deploy:
-  - provider: GitHub
-    tag: $(APPVEYOR_REPO_TAG_NAME)
-    release: $(DEPLOY_RELEASE_NAME)
-    description: $(DEPLOY_RELEASE_DESCRIPTION)
-    artifact: /.*\.nupkg/
-    draft: false
-    prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
-    auth_token: $(API_GITHUB_TOKEN)
-    force_update: true
-    on:
-      branch: master
-      appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)
+    - provider: GitHub
+      tag: $(APPVEYOR_REPO_TAG_NAME)
+      release: $(DEPLOY_RELEASE_NAME)
+      description: $(DEPLOY_RELEASE_DESCRIPTION)
+      artifact: /.*\.nupkg/
+      draft: false
+      prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
+      auth_token: $(API_GITHUB_TOKEN)
+      force_update: true
+      on:
+        branch: master
+        appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)
   on_success:
-  - ps: .\.build\Deploy-Documentation.ps1 
+    - ps: .\.build\Deploy-Documentation.ps1 

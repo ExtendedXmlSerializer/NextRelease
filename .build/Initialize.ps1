@@ -16,8 +16,9 @@ function Exec
         [Parameter(Position=1,Mandatory=0)][string]$errorMessage = ($msgs.error_bad_command -f $cmd)
     )
     & $cmd
-    if ($lastexitcode -ne 0) {
-        throw ("Exec: " + $errorMessage)
+    if ($LastExitCode -ne 0) {
+		$host.SetShouldExit($LastExitCode)
+        throw ("Exec: " + $errorMessage)		
     }
 }
 
