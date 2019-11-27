@@ -105,6 +105,7 @@ jobs:
              accountName = $env:DEPLOY_ACCOUNT
              projectSlug = $env:DEPLOY_SLUG
              branch = "${{ github.event.release.tag_name }}"
+             commitId = "${{ github.event.release.tag_name }}"
              environmentVariables = @{
                APPVEYOR_REPO_COMMIT_AUTHOR = $env:DEPLOY_USER
                APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL = $env:DEPLOY_EMAIL               
