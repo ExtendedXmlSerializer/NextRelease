@@ -12,13 +12,15 @@ environment:
 
 image: Visual Studio 2019
 
+skip_tags: true
+skip_non_tags: false
 skip_commits:
   author: /ExtendedXmlSerializer Automation*/
 
 configuration: Debug
 
 init:
-  - ps: . .\.build\Initialize.ps1
+- ps: . '.\.build\Initialize.ps1'
 
 dotnet_csproj:
   patch: true
@@ -26,19 +28,16 @@ dotnet_csproj:
   version_prefix: '{version}'
 
 build_script:
-  - ps: |
-        Exec { & dotnet build $env:BUILD_SOLUTION_PATH -c Release }
-        Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+- ps: |
+      Exec { & dotnet build $env:BUILD_SOLUTION_PATH -c Release }
+      Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
 
 nuget:
-    project_feed: false
-    disable_publish_on_pr: true
+  project_feed: false
+  disable_publish_on_pr: true
 
 pull_requests:
   do_not_increment_build_number: true
-
-skip_tags: true
-skip_non_tags: false
 
 for:
 - # Development
@@ -69,4 +68,3 @@ for:
   artifacts:
   - path: src\**\*.nupkg
     name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
-
