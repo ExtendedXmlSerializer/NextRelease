@@ -11,18 +11,42 @@ environment:
   DEPLOY_EMAIL: ExtendedXmlSerializer@users.noreply.github.com
 
 image: Visual Studio 2019
-branches:
-  only:
-  - master
-  - debug/documentation
-  - debug/deployment
 
 skip_commits:
   author: /ExtendedXmlSerializer Automation*/
-  # files:
-  #  - '.github\**\*.*'
 
-notifications:
+configuration: Debug
+
+init:
+  - ps: . .\.build\Initialize.ps1
+
+dotnet_csproj:
+  patch: true
+  file: src\*\*.csproj
+  version_prefix: '{version}'
+
+build_script:
+  - ps: |
+        Exec { & dotnet build $env:BUILD_SOLUTION_PATH -c Release }
+        Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+
+nuget:
+    project_feed: false
+    disable_publish_on_pr: true
+
+pull_requests:
+  do_not_increment_build_number: true
+
+skip_tags: true
+skip_non_tags: false
+
+for:
+- # Development
+  branches:
+    only:
+    - master
+  
+  notifications:
   - provider: GitHubPullRequest
     template: |
       {{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})
@@ -35,95 +59,14 @@ notifications:
       ```
       {{/passed}}
     on_build_success: true
-pull_requests:
-  do_not_increment_build_number: true
 
-install:
-  - ps: . .\.build\Install.ps1
-  - ps: |
-        if ($release)
-        {
-            Install-Module -Name SemVer
-            $current = (Split-Version $env:APPVEYOR_REPO_TAG_NAME).Version
-            
-            $headers = @{
-              "Authorization" = "Bearer $env:API_APPVEYOR_TOKEN"
-              "Content-type" = "application/json"
-            }
-                        
-            $s = Invoke-RestMethod "https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/settings" -Method Get -Headers $headers
-            $s.settings.versionFormat = "$current.{version}"
-            $s.settings.nextBuildNumber = "1"
-            Invoke-RestMethod 'https://ci.appveyor.com/api/projects' -Method Put -Headers $headers -Body ($s.settings | ConvertTo-Json -Depth 10)
-            $env:APPVEYOR_BUILD_NUMBER = "0"
-            Update-AppveyorBuild -Version $current
-        }
-        
-        if($documentation)
-        {            
-            git checkout $env:APPVEYOR_REPO_BRANCH -q
-            choco install docfx -y
-        }
-        
-        if ($release)
-        {
-            Install-Module -Name PowerShellForGitHub
-        }
-        
-        git submodule update --init -q
-
-dotnet_csproj:
-  patch: true
-  file: src\*\*.csproj
-  version_prefix: '{version}'
-
-build_script:
-  - ps: |
-        Exec { & dotnet build $env:BUILD_SOLUTION_PATH -c Release }
-        Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }        
-
-after_test:
+  after_test:
   - ps: Exec { & dotnet test $env:BUILD_SOLUTION_PATH -c Release -f netcoreapp2.1 }
 
-nuget:
-  project_feed: true
-  disable_publish_on_pr: false
-artifacts:
-- path: src\**\*.nupkg
-  name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
+  nuget:
+    project_feed: true
+    disable_publish_on_pr: false
+  artifacts:
+  - path: src\**\*.nupkg
+    name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
 
-before_deploy:
-  - ps: |
-        if ($release)
-        {
-            $parts = $env:APPVEYOR_REPO_NAME -Split '/'
-            $view = Get-GitHubRelease -OwnerName $parts[0] -RepositoryName $parts[1] -AccessToken $env:API_GITHUB_TOKEN | Where-Object {$_.tag_name -eq $env:APPVEYOR_REPO_TAG_NAME -and $_.assets.Length -eq 0} | Select-Object url, name, prerelease, body
-                       
-            $enabled = !($view -eq $null)
-            Write-Host "Deploy GitHub Release: $enabled"        
-            Set-AppveyorBuildVariable "DEPLOY_RELEASE_ENABLED" $enabled
-            
-            if ($enabled)
-            {
-                Set-AppveyorBuildVariable "DEPLOY_RELEASE_URL" $view.url
-                Set-AppveyorBuildVariable "DEPLOY_RELEASE_NAME" $view.name
-                Set-AppveyorBuildVariable "DEPLOY_RELEASE_IS_PRERELEASE" $view.prerelease
-                Set-AppveyorBuildVariable "DEPLOY_RELEASE_DESCRIPTION" $view.body                
-            }
-        }
-deploy:
-- provider: GitHub
-  tag: $(APPVEYOR_REPO_TAG_NAME)
-  release: $(DEPLOY_RELEASE_NAME)
-  description: $(DEPLOY_RELEASE_DESCRIPTION)
-  artifact: /.*\.nupkg/
-  draft: false
-  prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
-  auth_token: $(API_GITHUB_TOKEN)
-  force_update: true
-  on:
-    branch: master
-    appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)
-    
-on_success:
-  - ps: .\.build\Success.ps1
