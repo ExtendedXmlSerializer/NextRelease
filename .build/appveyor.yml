@@ -95,8 +95,8 @@ for:
   
   test: off
 
-  on_success:
-    - ps: .\.build\Deploy-Documentation.ps1
+  #on_success:
+    # - ps: .\.build\Deploy-Documentation.ps1
 - # Deploy
   skip_tags: false
   branches:
@@ -119,6 +119,10 @@ for:
   before_deploy:
     - ps: .\.build\Store-CurrentRelease.ps1
 
+  artifacts:
+    - path: src\**\*.nupkg
+      name: '$(APPVEYOR_PROJECT_NAME) $(APPVEYOR_BUILD_VERSION)'
+
   deploy:
     - provider: GitHub
       tag: $(APPVEYOR_REPO_TAG_NAME)
@@ -128,7 +132,7 @@ for:
       draft: false
       prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
       auth_token: $(API_GITHUB_TOKEN)
-      force_update: true
+      force_update: $(DEPLOY_RELEASE_ENABLED)
       on:
         appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)
   on_success:
