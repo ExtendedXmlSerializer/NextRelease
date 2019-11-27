@@ -88,7 +88,7 @@ jobs:
       run: |
            $current = [System.Management.Automation.SemanticVersion]"${{ github.event.release.tag_name }}".TrimStart("vV")
            
-           $token = "${{ secrets.API_APPVEYOR_TOKEN }}"
+           $token = ConvertTo-SecureString "${{ secrets.API_APPVEYOR_TOKEN }}" -AsPlainText -Force
            $s = Invoke-RestMethod "https://ci.appveyor.com/api/projects/$env:DEPLOY_ACCOUNT/$env:DEPLOY_SLUG/settings" -Token $token
            $s.settings.versionFormat = "$current.{version}"
            $s.settings.nextBuildNumber = "0"
