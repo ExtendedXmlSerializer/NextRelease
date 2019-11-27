@@ -12,7 +12,7 @@ environment:
 
 image: Visual Studio 2019
 
-skip_tags: true
+skip_tags: false
 skip_non_tags: true
 skip_commits:
   author: /Automation Agent/
