@@ -19,10 +19,9 @@ skip_commits:
 
 configuration: Debug
 
-init:
-- ps: |
-      Get-ChildItem .\.build
-      . '.\.build\Initialize.ps1'
+install:
+- ps: Write-Host 'Hello World 1!' # . '.\.build\Initialize.ps1' 
+
 
 dotnet_csproj:
   patch: true
@@ -70,3 +69,12 @@ for:
   artifacts:
   - path: src\**\*.nupkg
     name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
+ 
+ - # Development
+  branches:
+    only:
+    - debug/*
+  install:
+  - ps: Write-Host 'Hello World 2!' # . '.\.build\Initialize.ps1' 
+  - ps: . '.\.build\Initialize.ps1' 
+  
