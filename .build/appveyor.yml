@@ -46,7 +46,7 @@ for:
       - master
   
   install:
-    - ps: . .\.build\Initialize.ps1
+    - ps: . .\.build\Install.ps1
 
   build_script:
   - ps: |
@@ -73,6 +73,7 @@ for:
   nuget:
     project_feed: true
     disable_publish_on_pr: false
+    
   artifacts:
     - path: src\**\*.nupkg
       name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
@@ -87,16 +88,18 @@ for:
     - '%USERPROFILE%\.ssh\known_hosts'
   
   install:
-    - ps: . .\.build\Initialize.ps1
-    - ps: .\.build\Install.ps1
+    - ps: . .\.build\Install.ps1
+    - ps: .\.build\Prepare-Deployment.ps1
   
   build_script:
     - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+    - ps: Exec { & docfx $env:BUILD_DOCUMENTATION_PATH }
   
   test: off
 
-  #on_success:
-    # - ps: .\.build\Deploy-Documentation.ps1
+  on_success:
+    - ps: .\.build\Deploy-Documentation.ps1
+    
 - # Deploy
   skip_tags: false
   branches:
@@ -107,8 +110,8 @@ for:
     - '%USERPROFILE%\.ssh\known_hosts'
 
   install:
-    - ps: . .\.build\Initialize.ps1
-    - ps: .\.build\Install.ps1
+    - ps: . .\.build\Install.ps1
+    - ps: .\.build\Prepare-Deployment.ps1
   
   build_script:
     - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
