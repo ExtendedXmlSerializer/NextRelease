@@ -78,10 +78,46 @@ for:
   - ps: . .\.build\Initialize.ps1
   - ps: .\.build\Install.ps1
   
-  # build_script:
-  # - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+  build_script:
+  - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
   
-  # test: off
+  test: off
 
-  # on_success:
-  # - ps: .\.build\Deploy-Documentation.ps1
+  on_success:
+  - ps: .\.build\Deploy-Documentation.ps1
+- # Deploy
+  branches:
+    only:
+    - /\d*\.\d*\.\d*/
+  
+  skip_tags: false
+  skip_non_tags: true
+  
+  install:
+  - ps: . .\.build\Initialize.ps1
+  - ps: .\.build\Install.ps1
+  
+  build_script:
+  - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+  - ps: Exec { & docfx $env:BUILD_DOCUMENTATION_PATH }
+  
+  test: off
+
+  before_deploy:
+  - ps: .\.build\Store-CurrentRelease.ps1
+
+  deploy:
+  - provider: GitHub
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    release: $(DEPLOY_RELEASE_NAME)
+    description: $(DEPLOY_RELEASE_DESCRIPTION)
+    artifact: /.*\.nupkg/
+    draft: false
+    prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
+    auth_token: $(API_GITHUB_TOKEN)
+    force_update: true
+    on:
+      branch: master
+      appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)
+  on_success:
+  - ps: .\.build\Deploy-Documentation.ps1 
