@@ -86,8 +86,7 @@ jobs:
     steps:
     - name: Apply and Update Build Versioning
       run: |
-           Install-Module SemVer -Force
-           $current = (Split-Version "${{ github.event.release.tag_name }}").Version
+           $current = [System.Management.Automation.SemanticVersion]"${{ github.event.release.tag_name }}".TrimStart("vV")
            
            $token = "${{ secrets.API_APPVEYOR_TOKEN }}"
            $s = Invoke-RestMethod "https://ci.appveyor.com/api/projects/$env:DEPLOY_ACCOUNT/$env:DEPLOY_SLUG/settings" -Token $token
