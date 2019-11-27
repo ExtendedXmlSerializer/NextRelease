@@ -19,6 +19,7 @@ skip_commits:
  
 only_commits:
   files:
+    - '*.sln'
     - src\**\*
     - test\**\*
     - documentation\**\*
