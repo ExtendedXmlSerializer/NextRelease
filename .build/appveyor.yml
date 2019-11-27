@@ -12,11 +12,8 @@ environment:
 
 image: Visual Studio 2019
 
-cache:
-  - '%USERPROFILE%\.ssh\known_hosts'
-
 skip_tags: true
-skip_non_tags: false
+skip_non_tags: true
 skip_commits:
   author: /Automation Agent/
 
@@ -36,10 +33,11 @@ pull_requests:
 
 for:
 - # Development
+  skip_non_tags: false
   branches:
     only:
       - master
-
+  
   install:
     - ps: . .\.build\Initialize.ps1
 
@@ -73,9 +71,13 @@ for:
       name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
  
 - # Debug
+  skip_non_tags: false
   branches:
     only:
       - /debug\/\w*/
+
+  cache:
+    - '%USERPROFILE%\.ssh\known_hosts'
   
   install:
     - ps: . .\.build\Initialize.ps1
@@ -89,13 +91,14 @@ for:
   on_success:
     - ps: .\.build\Deploy-Documentation.ps1
 - # Deploy
+  skip_tags: false
   branches:
     only:
       - /\d*\.\d*\.\d*/
   
-  skip_tags: false
-  skip_non_tags: true
-  
+  cache:
+    - '%USERPROFILE%\.ssh\known_hosts'
+
   install:
     - ps: . .\.build\Initialize.ps1
     - ps: .\.build\Install.ps1
