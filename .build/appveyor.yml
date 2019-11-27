@@ -22,18 +22,10 @@ skip_commits:
 
 configuration: Debug
 
-install:
-  - ps: . .\.build\Initialize.ps1
-
 dotnet_csproj:
   patch: true
   file: src\*\*.csproj
   version_prefix: '{version}'
-
-build_script:
-- ps: |
-      Exec { & dotnet build $env:BUILD_SOLUTION_PATH -c Release }
-      Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
 
 nuget:
   project_feed: false
@@ -47,6 +39,14 @@ for:
   branches:
     only:
       - master
+
+  install:
+    - ps: . .\.build\Initialize.ps1
+
+  build_script:
+  - ps: |
+        Exec { & dotnet build $env:BUILD_SOLUTION_PATH -c Release }
+        Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
   
   notifications:
     - provider: GitHubPullRequest
