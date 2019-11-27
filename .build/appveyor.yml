@@ -21,8 +21,8 @@ configuration: Debug
 
 init:
 - ps: |
-  Get-ChildItem .\.build
-  . '.\.build\Initialize.ps1'
+      Get-ChildItem .\.build
+      . '.\.build\Initialize.ps1'
 
 dotnet_csproj:
   patch: true
