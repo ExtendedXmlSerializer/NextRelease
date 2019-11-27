@@ -73,7 +73,7 @@ for:
 - # Debug
   branches:
     only:
-    - debug/*
+    - /debug\//
   install:
   - ps: Write-Host 'Hello World 2!' # . '.\.build\Initialize.ps1' 
   - ps: . '.\.build\Initialize.ps1' 
