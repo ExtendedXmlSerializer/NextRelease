@@ -89,10 +89,10 @@ jobs:
            $current = [System.Management.Automation.SemanticVersion]"${{ github.event.release.tag_name }}".TrimStart("vV")
            
            $token = ConvertTo-SecureString "${{ secrets.API_APPVEYOR_TOKEN }}" -AsPlainText -Force
-           $s = Invoke-RestMethod "https://ci.appveyor.com/api/projects/$env:DEPLOY_ACCOUNT/$env:DEPLOY_SLUG/settings" -Token $token
+           $s = Invoke-RestMethod "https://ci.appveyor.com/api/projects/$env:DEPLOY_ACCOUNT/$env:DEPLOY_SLUG/settings" -Authentication Bearer -Token $token
            $s.settings.versionFormat = "$current.{version}"
            $s.settings.nextBuildNumber = "0"
-           Invoke-RestMethod 'https://ci.appveyor.com/api/projects' -Method Put -Token $token -Body ($s.settings | ConvertTo-Json -Depth 10)
+           Invoke-RestMethod 'https://ci.appveyor.com/api/projects' -Method Put -Authentication Bearer -Token $token -Body ($s.settings | ConvertTo-Json -Depth 10)
       shell: pwsh
     - name: Initiate Build Process
       run: |
