@@ -86,7 +86,7 @@ jobs:
     steps:
     - name: Apply and Update Build Versioning
       run: |
-           Install-Module -Name SemVer
+           Install-Module SemVer -Force
            $current = (Split-Version "${{ github.event.release.tag_name }}").Version
            
            $token = "${{ secrets.API_APPVEYOR_TOKEN }}"
