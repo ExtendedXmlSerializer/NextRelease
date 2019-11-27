@@ -22,4 +22,9 @@ function Exec
     }
 }
 
+Get-ChildItem Env:
+
+
+
 git submodule update --init -q
+
