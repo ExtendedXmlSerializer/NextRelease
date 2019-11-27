@@ -20,7 +20,9 @@ skip_commits:
 configuration: Debug
 
 init:
-- ps: . '.\.build\Initialize.ps1'
+- ps: |
+  Get-ChildItem .\.build
+  . '.\.build\Initialize.ps1'
 
 dotnet_csproj:
   patch: true
