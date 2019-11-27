@@ -12,7 +12,7 @@ environment:
 
 image: Visual Studio 2019
 
-skip_tags: false
+skip_tags: true
 skip_non_tags: true
 skip_commits:
   author: /Automation Agent/
@@ -39,43 +39,6 @@ pull_requests:
   do_not_increment_build_number: true
 
 for:
-- # Deploy
-  skip_tags: false
-  branches:
-    only:
-      - /\d*\.\d*\.\d*/
-  
-  cache:
-    - '%USERPROFILE%\.ssh\known_hosts'
-
-  install:
-    - ps: . .\.build\Initialize.ps1
-    - ps: .\.build\Install.ps1
-  
-  build_script:
-    - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
-    - ps: Exec { & docfx $env:BUILD_DOCUMENTATION_PATH }
-  
-  test: off
-
-  before_deploy:
-    - ps: .\.build\Store-CurrentRelease.ps1
-
-  deploy:
-    - provider: GitHub
-      tag: $(APPVEYOR_REPO_TAG_NAME)
-      release: $(DEPLOY_RELEASE_NAME)
-      description: $(DEPLOY_RELEASE_DESCRIPTION)
-      artifact: /.*\.nupkg/
-      draft: false
-      prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
-      auth_token: $(API_GITHUB_TOKEN)
-      force_update: true
-      on:
-        branch: master
-        appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)
-  on_success:
-    - ps: .\.build\Deploy-Documentation.ps1 
 - # Development
   skip_non_tags: false
   branches:
@@ -134,3 +97,39 @@ for:
 
   on_success:
     - ps: .\.build\Deploy-Documentation.ps1
+- # Deploy
+  skip_tags: false
+  branches:
+    only:
+      - /\d*\.\d*\.\d*/
+  
+  cache:
+    - '%USERPROFILE%\.ssh\known_hosts'
+
+  install:
+    - ps: . .\.build\Initialize.ps1
+    - ps: .\.build\Install.ps1
+  
+  build_script:
+    - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+    - ps: Exec { & docfx $env:BUILD_DOCUMENTATION_PATH }
+  
+  test: off
+
+  before_deploy:
+    - ps: .\.build\Store-CurrentRelease.ps1
+
+  deploy:
+    - provider: GitHub
+      tag: $(APPVEYOR_REPO_TAG_NAME)
+      release: $(DEPLOY_RELEASE_NAME)
+      description: $(DEPLOY_RELEASE_DESCRIPTION)
+      artifact: /.*\.nupkg/
+      draft: false
+      prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
+      auth_token: $(API_GITHUB_TOKEN)
+      force_update: true
+      on:
+        appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)
+  on_success:
+    - ps: .\.build\Deploy-Documentation.ps1 
