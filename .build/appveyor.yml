@@ -17,7 +17,7 @@ skip_non_tags: true
 skip_commits:
   author: /Automation Agent/
   files:
-    - '.github/**'
+    - '.github/**/*'
 
 configuration: Debug
 
