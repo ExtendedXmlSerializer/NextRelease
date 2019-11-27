@@ -20,3 +20,5 @@ function Exec
         throw ("Exec: " + $errorMessage)
     }
 }
+
+git submodule update --init -q

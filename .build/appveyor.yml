@@ -20,8 +20,7 @@ skip_commits:
 configuration: Debug
 
 install:
-- ps: Write-Host 'Hello World 1!' # . '.\.build\Initialize.ps1' 
-
+- ps: . .\.build\Initialize.ps1
 
 dotnet_csproj:
   patch: true
@@ -74,7 +73,29 @@ for:
   branches:
     only:
     - /debug\/\w*/
-  install:
-  - ps: Write-Host 'Hello World 2!' # . '.\.build\Initialize.ps1' 
-  - ps: . '.\.build\Initialize.ps1' 
   
+  install:
+  - ps: . .\.build\Initialize.ps1
+  - ps: .\.build\Install.ps1
+  
+  build_script:
+  - ps: Exec { & dotnet pack $env:BUILD_SOLUTION_PATH -c Release }
+  
+  test: off
+
+  before_deploy:
+  - ps: .\.build\Store-CurrentRelease.ps1
+
+  deploy:
+  - provider: GitHub
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    release: $(DEPLOY_RELEASE_NAME)
+    description: $(DEPLOY_RELEASE_DESCRIPTION)
+    artifact: /.*\.nupkg/
+    draft: false
+    prerelease: $(DEPLOY_RELEASE_IS_PRERELEASE)
+    auth_token: $(API_GITHUB_TOKEN)
+    force_update: true
+    on:
+      branch: master
+      appveyor_repo_tag: $(DEPLOY_RELEASE_ENABLED)        
