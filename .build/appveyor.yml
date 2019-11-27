@@ -70,7 +70,7 @@ for:
   - path: src\**\*.nupkg
     name: 'Preview Package $(APPVEYOR_BUILD_VERSION)'
  
- - # Development
+- # Debug
   branches:
     only:
     - debug/*
