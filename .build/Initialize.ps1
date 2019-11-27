@@ -22,9 +22,8 @@ function Exec
     }
 }
 
-Get-ChildItem Env:
-
-
-
+if ($env:APPVEYOR_REPO_TAG)
+{
+	git checkout "tags/$($env:APPVEYOR_REPO_TAG_NAME)"
+}
 git submodule update --init -q
-
