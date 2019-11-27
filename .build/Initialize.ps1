@@ -22,14 +22,4 @@ function Exec
     }
 }
 
-if ($env:APPVEYOR_FORCED_BUILD)
-{
-	$env:APPVEYOR_REPO_BRANCH = "$env:APPVEYOR_REPO_TAG_NAME"
-	
-	git checkout -b $env:APPVEYOR_REPO_TAG_NAME "tags/$($env:APPVEYOR_REPO_TAG_NAME)"
-}
-
-Get-ChildItem Env:
-
-
 git submodule update --init -q
