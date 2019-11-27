@@ -1,4 +1,4 @@
-# choco install docfx -y
+choco install docfx -y
 Install-Module -Name PowerShellForGitHub
 
 git checkout $env:APPVEYOR_REPO_BRANCH -q
