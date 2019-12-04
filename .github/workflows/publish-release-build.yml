@@ -1,8 +1,9 @@
 name: Publish Release Build
 
 on:
-  release: deleted
+  release:
     #types: [published]
+    types: [deleted]
 
 env:
   DEPLOY_USER: "ExtendedXmlSerializer's GitHub Action Automation Agent"
