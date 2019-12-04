@@ -2,7 +2,8 @@ name: Update the CHANGELOG
 
 on:
   release:
-    types: [unpublished, edited, deleted]
+    types: [deleted]
+    #types: [unpublished, edited, deleted]
 
 env:
   DEPLOY_USER: "ExtendedXmlSerializer's GitHub Action Automation Agent"
@@ -64,7 +65,7 @@ jobs:
 
             [1]: https://github.com/peter-evans/create-pull-request
           labels: automerge
-          branch: automated/changelog          
+          branch: automated/changelog
 #      - name: Push changes
 #        uses: ad-m/github-push-action@master
 #        with:
